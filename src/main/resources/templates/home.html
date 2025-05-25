@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>eMart</title>
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/sidebar.css">
+<link rel="stylesheet" href="/css/searchbar.css">
+</head>
+
+<body>
+
+	<div class="search-bar">
+		<form action="/search" method="get">
+			<input type="text" name="query"
+				placeholder="Search products, categories..." />
+			<button type="submit">Search</button>
+		</form>
+
+	</div>
+
+	<!-- Sidebar -->
+	<div class="sidebar" id="sidebar">
+		<a href="/about">About Us</a> <a href="/categories">Product
+			Category</a> <a href="/search">Search</a>
+	</div>
+
+	<!-- Toggle Button -->
+	<button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+	<header>
+		<h1>Online Shopping Mart</h1>
+
+	</header>
+	<div class="container">
+		<div class="products">
+			<h2>Products</h2>
+			<div id="product-list">
+				<!-- Products will be rendered here -->
+			</div>
+		</div>
+		<div class="cart">
+			<h2>Cart</h2>
+			<div id="cart-list">
+				<p>Cart is empty.</p>
+			</div>
+		</div>
+	</div>
+
+	<script>
+    const products = [
+      { id: 1, name: "Crystal Tea Light", price: 75, image: "crystalTeaLight.jpg" },
+      { id: 2, name: "Glass Candle", price: 120, image: "crystalTeaLight.jpg"  },
+      { id: 3, name: "Mini Bubble Candle", price: 50, image: "crystalTeaLight.jpg"  },
+      { id: 4, name: "Rose Candle", price: 60, image: "crystalTeaLight.jpg"  }
+    ];
+
+    let cart = [];
+
+    const productList = document.getElementById("product-list");
+    const cartList = document.getElementById("cart-list");
+
+    function renderProducts() {
+      productList.innerHTML = "";
+      products.forEach(product => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <strong>${product.name}</strong> - Rs.${product.price}
+          <br/>
+          <img src="/images/crystalTeaLight.jpg" alt="candle">
+          <br/>
+          <button onclick="addToCart(${product.id})">Add to Cart</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    function renderCart() {
+      cartList.innerHTML = "";
+      if (cart.length === 0) {
+        cartList.innerHTML = "<p>Cart is empty.</p>";
+        return;
+      }
+      cart.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <span>${item.name} - $${item.price}</span>
+          <button class="remove" onclick="removeFromCart(${index})">Remove</button>
+        `;
+        cartList.appendChild(div);
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      cart.push(product);
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    // Initial Render
+    renderProducts();
+    renderCart();
+  </script>
+
+	<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('collapsed');
+        document.querySelector('.toggle-btn').classList.toggle('collapsed');
+    }
+</script>
+
+	<footer
+		style="background-color: #f4f4f4; padding: 20px; text-align: center;">
+		<div style="margin-bottom: 10px;">
+			<a href="/contact"
+				style="margin: 0 15px; text-decoration: none; color: #333;">Contact</a>
+			<a href="/help"
+				style="margin: 0 15px; text-decoration: none; color: #333;">Help</a>
+		</div>
+		<div>
+			<a href="https://www.instagram.com/yourprofile" target="_blank"
+				style="margin: 0 10px;"> <img
+				src="https://cdn-icons-png.flaticon.com/24/174/174855.png"
+				alt="Instagram" />
+			</a> <a href="https://www.twitter.com/yourprofile" target="_blank"
+				style="margin: 0 10px;"> <img
+				src="https://cdn-icons-png.flaticon.com/24/733/733579.png"
+				alt="Twitter" />
+			</a>
+		</div>
+		<p style="margin-top: 10px; color: #777;">&copy; 2025 Your
+			Company. All rights reserved.</p>
+	</footer>
+
+
+</body>
+</html>
