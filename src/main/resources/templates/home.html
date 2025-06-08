@@ -7,20 +7,52 @@
 <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/sidebar.css">
 <link rel="stylesheet" href="/css/searchbar.css">
+<link rel="stylesheet" href="/css/user.css">
+
+
 </head>
 
-<body>
+<body onload="toggleSidebar()">
+<span class="login-icon" id="loginIcon">&#128100;</span> <!-- 👤 icon -->
+<!-- Overlay and Popup -->
+  <div class="popup-overlay" id="overlay"></div>
 
+  <div class="login-popup" id="loginPopup">
+    <h2>Log in or Sign up</h2>
+    <input type="text" id="username" placeholder="Enter your email id or phone number" />
+    <div id="usernameError" class="error-message">Invalid email or phone number</div>
+    <button onclick="validateLogin()">Continue</button>
+    <div id="codeSection" style="display: none;">
+      <input type="text" id="codeInput" placeholder="Enter verification code" />
+      <button onclick="verifyCode()">Verify Code</button>
+    </div>
+    <div id="responseMessage" class="message"></div>
+  </div>
+  
+  <!-- Sign-Up Popup -->
+  <div class="signup-popup" id="signupPopup">
+    <h2>Sign Up</h2>
+    <input type="text" id="firstName" placeholder="First Name" />
+    <input type="text" id="lastName" placeholder="Last Name" />
+    <input type="email" id="signupEmail" placeholder="Email" />
+    <input type="text" id="signupPhone" placeholder="Phone Number" />
+    <button onclick="submitSignup()">Sign Up</button>
+    <div id="signupMessage" class="message"></div>
+  </div>
+  
+	<header>
+		<h2>Online Shopping Mart</h2>
+	</header>
+	<!-- Search bar -->
 	<div class="search-bar">
 		<form action="/search" method="get">
 			<input type="text" name="query"
 				placeholder="Search products, categories..." />
 			<button type="submit">Search</button>
 		</form>
-
 	</div>
 
-	<!-- Sidebar -->
+	<!-- Side bar -->
 	<div class="sidebar" id="sidebar">
 		<a href="/about">About Us</a> <a href="/categories">Product
 			Category</a> <a href="/search">Search</a>
@@ -28,10 +60,7 @@
 
 	<!-- Toggle Button -->
 	<button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-	<header>
-		<h1>Online Shopping Mart</h1>
 
-	</header>
 	<div class="container">
 		<div class="products">
 			<h2>Products</h2>
@@ -47,99 +76,12 @@
 		</div>
 	</div>
 
-	<script>
-    const products = [
-      { id: 1, name: "Crystal Tea Light", price: 75, image: "crystalTeaLight.jpg" },
-      { id: 2, name: "Glass Candle", price: 120, image: "crystalTeaLight.jpg"  },
-      { id: 3, name: "Mini Bubble Candle", price: 50, image: "crystalTeaLight.jpg"  },
-      { id: 4, name: "Rose Candle", price: 60, image: "crystalTeaLight.jpg"  }
-    ];
+	<div id="footer-content"></div>
 
-    let cart = [];
-
-    const productList = document.getElementById("product-list");
-    const cartList = document.getElementById("cart-list");
-
-    function renderProducts() {
-      productList.innerHTML = "";
-      products.forEach(product => {
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-          <strong>${product.name}</strong> - Rs.${product.price}
-          <br/>
-          <img src="/images/crystalTeaLight.jpg" alt="candle">
-          <br/>
-          <button onclick="addToCart(${product.id})">Add to Cart</button>
-        `;
-        productList.appendChild(div);
-      });
-    }
-
-    function renderCart() {
-      cartList.innerHTML = "";
-      if (cart.length === 0) {
-        cartList.innerHTML = "<p>Cart is empty.</p>";
-        return;
-      }
-      cart.forEach((item, index) => {
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
-          <span>${item.name} - $${item.price}</span>
-          <button class="remove" onclick="removeFromCart(${index})">Remove</button>
-        `;
-        cartList.appendChild(div);
-      });
-    }
-
-    function addToCart(id) {
-      const product = products.find(p => p.id === id);
-      cart.push(product);
-      renderCart();
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      renderCart();
-    }
-
-    // Initial Render
-    renderProducts();
-    renderCart();
-  </script>
-
-	<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('collapsed');
-        document.querySelector('.toggle-btn').classList.toggle('collapsed');
-    }
-</script>
-
-	<footer
-		style="background-color: #f4f4f4; padding: 20px; text-align: center;">
-		<div style="margin-bottom: 10px;">
-			<a href="/contact"
-				style="margin: 0 15px; text-decoration: none; color: #333;">Contact</a>
-			<a href="/help"
-				style="margin: 0 15px; text-decoration: none; color: #333;">Help</a>
-		</div>
-		<div>
-			<a href="https://www.instagram.com/yourprofile" target="_blank"
-				style="margin: 0 10px;"> <img
-				src="https://cdn-icons-png.flaticon.com/24/174/174855.png"
-				alt="Instagram" />
-			</a> <a href="https://www.twitter.com/yourprofile" target="_blank"
-				style="margin: 0 10px;"> <img
-				src="https://cdn-icons-png.flaticon.com/24/733/733579.png"
-				alt="Twitter" />
-			</a>
-		</div>
-		<p style="margin-top: 10px; color: #777;">&copy; 2025 Your
-			Company. All rights reserved.</p>
-	</footer>
-
-
+	<script src="/scripts/main.js"></script>
+	<script src="/scripts/sidebar.js"></script>
+	<script src="/scripts/user.js"></script>
+	<script src="/scripts/footer.js"></script>
+	
 </body>
 </html>

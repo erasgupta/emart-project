@@ -4,6 +4,24 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    private String phoneNumber;
+    
+    public User(String email, String phoneNumber){
+    	this.email = email;
+    	this.phoneNumber = phoneNumber;
+    }
+    
+    
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+
 	public Long getId() {
 		return id;
 	}
