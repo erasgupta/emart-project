@@ -9,37 +9,44 @@
 <link rel="stylesheet" href="/css/searchbar.css">
 <link rel="stylesheet" href="/css/user.css">
 
-
 </head>
 
-<body onload="toggleSidebar()">
-<span class="login-icon" id="loginIcon">&#128100;</span> <!-- 👤 icon -->
-<!-- Overlay and Popup -->
-  <div class="popup-overlay" id="overlay"></div>
+<body>
+	<div class="login-container">
+		<span class="welcome-message" id="welcomeMessage"></span> <span
+			class="login-icon" id="loginIcon">&#128100;</span>
+		<!-- 👤 icon -->
+	</div>
 
-  <div class="login-popup" id="loginPopup">
-    <h2>Log in or Sign up</h2>
-    <input type="text" id="username" placeholder="Enter your email id or phone number" />
-    <div id="usernameError" class="error-message">Invalid email or phone number</div>
-    <button onclick="validateLogin()">Continue</button>
-    <div id="codeSection" style="display: none;">
-      <input type="text" id="codeInput" placeholder="Enter verification code" />
-      <button onclick="verifyCode()">Verify Code</button>
-    </div>
-    <div id="responseMessage" class="message"></div>
-  </div>
-  
-  <!-- Sign-Up Popup -->
-  <div class="signup-popup" id="signupPopup">
-    <h2>Sign Up</h2>
-    <input type="text" id="firstName" placeholder="First Name" />
-    <input type="text" id="lastName" placeholder="Last Name" />
-    <input type="email" id="signupEmail" placeholder="Email" />
-    <input type="text" id="signupPhone" placeholder="Phone Number" />
-    <button onclick="submitSignup()">Sign Up</button>
-    <div id="signupMessage" class="message"></div>
-  </div>
-  
+	<!-- Overlay and Popup -->
+	<div class="popup-overlay" id="overlay"></div>
+
+	<div class="login-popup" id="loginPopup">
+		<h2>Log in or Sign up</h2>
+		<input type="text" id="username"
+			placeholder="Enter your email id or phone number" />
+		<div id="usernameError" class="error-message">Invalid email or
+			phone number</div>
+		<button onclick="validateLogin()">Continue</button>
+		<div id="codeSection" style="display: none;">
+			<input type="text" id="codeInput"
+				placeholder="Enter verification code" />
+			<button onclick="verifyCode()">Verify Code</button>
+		</div>
+		<div id="responseMessage" class="message"></div>
+	</div>
+
+	<!-- Sign-Up Popup -->
+	<div class="signup-popup" id="signupPopup">
+		<h2>Sign Up</h2>
+		<input type="text" id="firstName" placeholder="First Name" /> <input
+			type="text" id="lastName" placeholder="Last Name" /> <input
+			type="email" id="signupEmail" placeholder="Email" /> <input
+			type="text" id="signupPhone" placeholder="Phone Number" />
+		<button onclick="submitSignup()">Sign Up</button>
+		<div id="signupMessage" class="message"></div>
+	</div>
+
 	<header>
 		<h2>Online Shopping Mart</h2>
 	</header>
@@ -80,8 +87,9 @@
 
 	<script src="/scripts/main.js"></script>
 	<script src="/scripts/sidebar.js"></script>
+	<script src="/scripts/searchbar.js"></script>
 	<script src="/scripts/user.js"></script>
 	<script src="/scripts/footer.js"></script>
-	
+
 </body>
 </html>

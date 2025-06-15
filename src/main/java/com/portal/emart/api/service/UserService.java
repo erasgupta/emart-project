@@ -1,5 +1,6 @@
 package com.portal.emart.api.service;
 
+import com.portal.emart.api.component.JwtUtil;
 import com.portal.emart.api.component.SmsSender;
 import com.portal.emart.api.model.SendCodeResponse;
 import com.portal.emart.api.model.User;
@@ -18,17 +19,19 @@ public class UserService {
     
     private final JavaMailSender mailSender;
     private final SmsSender smsSender;
+    private final JwtUtil jwtUtil;
     // constructor
-    public UserService(JavaMailSender mailSender, SmsSender smsSender) {
+    public UserService(JavaMailSender mailSender, SmsSender smsSender, JwtUtil jwtUtil) {
         this.mailSender = mailSender;
         this.smsSender = smsSender;
+        this.jwtUtil = jwtUtil;
     }
     
     
     private final Map<String, String> otpStore = new HashMap<>();
     private final List<User> users = Arrays.asList(
-            new User("sunny2021@gmail.com", "1234567890"),
-            new User("jane@example.com", "9876543210")
+            new User("Ashish","sunny2021@gmail.com", "1234567890"),
+            new User("Jane","jane@example.com", "9876543210")
     );
 
     public SendCodeResponse sendCode(String username) {
@@ -40,7 +43,7 @@ public class UserService {
         }
 
         Optional<User> user = users.stream()
-                .filter(u -> u.getEmail().equals(username) || u.getPhoneNumber().equals(username))
+                .filter(u -> u.getEmail().equalsIgnoreCase(username) || u.getPhoneNumber().equals(username))
                 .findFirst();
 
         if (user.isEmpty()) {
@@ -88,8 +91,15 @@ public class UserService {
 
         // Optionally clear the code after successful verification
         otpStore.remove(username);
+        String token = jwtUtil.generateToken(username);
 
-        return new SendCodeResponse(true, null, "Verification successful");
+        return new SendCodeResponse(true, token, "Verification successful");
+    }
+    
+    public User getUserByUsername(String username) {
+        //return userRepository.findByEmailOrPhone(username, username);
+    	User user = new User("Ashish","sunny2021@gmail.com","9654018490");
+    	return user;
     }
 
 

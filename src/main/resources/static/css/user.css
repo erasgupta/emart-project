@@ -119,3 +119,21 @@ body {
     margin-top: 10px;
     font-size: 0.95em;
   }
+  
+.login-container {
+  position: relative;
+}
+
+
+.welcome-message {
+  position: absolute;
+  top: 22px;
+  right: 70px; /* space from the icon */
+  font-size: 14px;
+  color: #ffffff;        /* white text */
+  font-weight: 500;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.1); /* optional light overlay for contrast */
+  padding: 4px 8px;
+  border-radius: 5px;
+}

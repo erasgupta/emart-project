@@ -5,7 +5,11 @@ import com.portal.emart.api.model.SendCodeResponse;
 import com.portal.emart.api.model.User;
 import com.portal.emart.api.model.VerifyCodeRequest;
 import com.portal.emart.api.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +33,21 @@ public class UserController {
         return ResponseEntity.ok(
         		userService.verifyCode(request.getUsername(), request.getCode())
         );
+    }
+    
+    @GetMapping("/getUserDetails")
+    public ResponseEntity<?> getUserDetails(HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        return ResponseEntity.ok(user);
     }
 
 
