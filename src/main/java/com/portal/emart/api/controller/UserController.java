@@ -1,20 +1,25 @@
 package com.portal.emart.api.controller;
 
-import com.portal.emart.api.model.SendCodeRequest;
-import com.portal.emart.api.model.SendCodeResponse;
-import com.portal.emart.api.model.User;
-import com.portal.emart.api.model.VerifyCodeRequest;
-import com.portal.emart.api.service.UserService;
-
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.portal.emart.api.model.SendCodeRequest;
+import com.portal.emart.api.model.SendCodeResponse;
+import com.portal.emart.api.model.SignUpRequest;
+import com.portal.emart.api.model.User;
+import com.portal.emart.api.model.VerifyCodeRequest;
+import com.portal.emart.api.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("emart/api/users")
@@ -49,40 +54,17 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
+    
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequest request) {
+        String result = userService.registerUser(request);
 
-
-    // CREATE
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = userService.createUser(user);
-        return ResponseEntity.ok(savedUser);
+        if (result.equals("User registered successfully")) {
+            return ResponseEntity.ok(Map.of("success", true, "message", result));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(Map.of("success", false, "message", result));
+        }
     }
 
-    // READ ALL
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    // READ BY ID
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
-
-    // UPDATE
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    // DELETE
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
 }

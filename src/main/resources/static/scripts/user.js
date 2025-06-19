@@ -226,3 +226,49 @@ function getUserDetails() {
 		});
 }
 
+async function signUpUser() {
+	signupMessage.style.display = "none";
+	
+	const payload = {
+		firstName: firstName.value.trim(),
+		lastName: lastName.value.trim(),
+		email: signupEmail.value.trim(),
+		phone: signupPhone.value.trim(),
+	};
+	
+	if (!payload.firstName || !payload.lastName || !isValidEmail(payload.email) || !isValidPhone(payload.phone)) {
+		signupMessage.textContent = "Please fill in all fields correctly.";
+		signupMessage.className = "message error-message";
+		signupMessage.style.display = "block";
+		return;
+	}
+	
+	try {
+		const response = await fetch("/emart/api/users/signup", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(payload),
+		});
+
+		const result = await response.json();
+
+
+		if (response.ok) {
+			signupMessage.textContent = result.message;
+			signupMessage.className = "message success-message";
+			signupMessage.style.display = "block";
+			setTimeout(closeAllPopups, 1500);
+
+		} else {
+			signupMessage.textContent = result.message;
+			signupMessage.className = "message error-message";
+			signupMessage.style.display = "block";
+		}
+	} catch (error) {
+		console.error("Sign-up failed:", error);
+		alert("⚠️ Network or server error");
+	}
+}
+

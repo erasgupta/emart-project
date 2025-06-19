@@ -73,10 +73,10 @@ body {
      .signup-popup {
     display: none;
     position: fixed;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px; /* Wider than login */
+    width: 300px; /* Wider than login */
     background: white;
     border: 1px solid #ccc;
     padding: 30px 25px;

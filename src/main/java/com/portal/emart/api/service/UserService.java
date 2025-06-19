@@ -1,38 +1,42 @@
 package com.portal.emart.api.service;
 
-import com.portal.emart.api.component.JwtUtil;
-import com.portal.emart.api.component.SmsSender;
-import com.portal.emart.api.model.SendCodeResponse;
-import com.portal.emart.api.model.User;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import com.portal.emart.api.component.JwtUtil;
+import com.portal.emart.api.component.SmsSender;
+import com.portal.emart.api.dao.UserRepository;
+import com.portal.emart.api.entity.Customers;
+import com.portal.emart.api.model.SendCodeResponse;
+import com.portal.emart.api.model.SignUpRequest;
+import com.portal.emart.api.model.User;
 
 @Service
 public class UserService {
-
-    private Map<Long, User> userRepo = new HashMap<>();
-    private Long currentId = 1L;
     
     private final JavaMailSender mailSender;
     private final SmsSender smsSender;
     private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
     // constructor
-    public UserService(JavaMailSender mailSender, SmsSender smsSender, JwtUtil jwtUtil) {
+    public UserService(JavaMailSender mailSender, SmsSender smsSender, JwtUtil jwtUtil,UserRepository userRepository) {
         this.mailSender = mailSender;
         this.smsSender = smsSender;
         this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
     
     
     private final Map<String, String> otpStore = new HashMap<>();
-    private final List<User> users = Arrays.asList(
-            new User("Ashish","sunny2021@gmail.com", "1234567890"),
-            new User("Jane","jane@example.com", "9876543210")
-    );
+  //  private final List<User> users = Arrays.asList(
+    //        new User("Ashish","sunny2021@gmail.com", "1234567890"),
+      //      new User("Jane","jane@example.com", "9876543210")
+    //);
 
     public SendCodeResponse sendCode(String username) {
         boolean isEmail = username.matches("^[\\w.-]+@[\\w.-]+\\.\\w+$");
@@ -42,11 +46,13 @@ public class UserService {
             return new SendCodeResponse(false, null, "Invalid email or phone format");
         }
 
-        Optional<User> user = users.stream()
-                .filter(u -> u.getEmail().equalsIgnoreCase(username) || u.getPhoneNumber().equals(username))
-                .findFirst();
+        User user = getUserDtoByEmailOrPhone(username, username);
+        
+        //Optional<User> user = users.stream()
+          //      .filter(u -> u.getEmail().equalsIgnoreCase(username) || u.getPhoneNumber().equals(username))
+            //    .findFirst();
 
-        if (user.isEmpty()) {
+        if (user == null) {
             return new SendCodeResponse(false, "USER_NOT_FOUND", "User not found");
         }
 
@@ -97,36 +103,41 @@ public class UserService {
     }
     
     public User getUserByUsername(String username) {
-        //return userRepository.findByEmailOrPhone(username, username);
-    	User user = new User("Ashish","sunny2021@gmail.com","9654018490");
-    	return user;
+        return getUserDtoByEmailOrPhone(username, username);
+    	//User user = new User("Ashish","sunny2021@gmail.com","9654018490");
+    	//return user;
     }
+    
+    public String registerUser(SignUpRequest request) {
+        if (userRepository.existsByEmail(request.email)) {
+            return "Email already registered";
+        }
+        if (userRepository.existsByPhone(request.phone)) {
+            return "Phone number already registered";
+        }
 
+        Customers customers = new Customers();
+        customers.setFirstName(request.firstName);
+        customers.setLastName(request.lastName);
+        customers.setEmail(request.email);
+        customers.setPhone(request.phone);
 
-    public User createUser(User user) {
-        user.setId(currentId++);
-        userRepo.put(user.getId(), user);
+        userRepository.save(customers);
+        return "User registered successfully";
+    }
+    
+    public User getUserDtoByEmailOrPhone(String email, String phone) {
+        Customers customer = userRepository.findByEmailOrPhone(email, phone);
+        User user = null;
+        if (customer != null) {
+            user = new User(
+                    customer.getFirstName(),
+                    customer.getEmail(),
+                    customer.getPhone()
+                );
+        }
+
         return user;
     }
 
-    public List<User> getAllUsers() {
-        return new ArrayList<>(userRepo.values());
-    }
-
-    public User getUserById(Long id) {
-        return userRepo.get(id);
-    }
-
-    public User updateUser(Long id, User userDetails) {
-        User existingUser = userRepo.get(id);
-        if (existingUser != null) {
-            existingUser.setName(userDetails.getName());
-            existingUser.setEmail(userDetails.getEmail());
-        }
-        return existingUser;
-    }
-
-    public void deleteUser(Long id) {
-        userRepo.remove(id);
-    }
 }
