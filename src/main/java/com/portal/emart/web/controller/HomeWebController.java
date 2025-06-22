@@ -28,5 +28,11 @@ class HomeWebController {
         return "footer";
     }
     
+    @GetMapping("/about")
+    public String aboutPage(Model model) {
+    	model.addAttribute("appName", appName);
+        return "about";
+    }
+    
     
 }
