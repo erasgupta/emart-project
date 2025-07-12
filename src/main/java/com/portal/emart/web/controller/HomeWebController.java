@@ -22,6 +22,12 @@ class HomeWebController {
         return "home";
     }
     
+    @GetMapping("/order")
+    public String orderPage(Model model) {
+    	model.addAttribute("appName", appName);
+        return "order";
+    }
+    
     @GetMapping("/footer")
     public String footerPage(Model model) {
     	model.addAttribute("appName", appName);

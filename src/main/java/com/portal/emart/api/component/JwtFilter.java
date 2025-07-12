@@ -27,7 +27,7 @@ public class JwtFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         String path = request.getRequestURI();
-        if (path.startsWith("/emart/api/users/send-code") || path.startsWith("/emart/api/users/verify-code") || path.startsWith("/emart/api/users/signup")) {
+        if (path.startsWith("/emart/api/order/placeOrder") || path.startsWith("/emart/api/users/send-code") || path.startsWith("/emart/api/users/verify-code") || path.startsWith("/emart/api/users/signup")) {
             chain.doFilter(req, res); // Skip for public APIs
             return;
         }
