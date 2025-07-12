@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.portal.emart.api.model.OrderRequest;
 import com.portal.emart.api.service.OrderService;
 
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("emart/api/order")
-@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;

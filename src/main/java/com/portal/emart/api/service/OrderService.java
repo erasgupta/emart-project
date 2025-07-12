@@ -1,19 +1,18 @@
 package com.portal.emart.api.service;
 
-import com.portal.emart.api.model.OrderRequest;
-import com.portal.emart.api.entity.Customers;
-import com.portal.emart.api.entity.Order;
-import com.portal.emart.api.dao.UserRepository;
-import com.portal.emart.api.dao.OrderRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import org.springframework.stereotype.Service;
+
+import com.portal.emart.api.dao.OrderRepository;
+import com.portal.emart.api.dao.UserRepository;
+import com.portal.emart.api.entity.Customers;
+import com.portal.emart.api.entity.Order;
+import com.portal.emart.api.model.OrderRequest;
+
 @Service
-@RequiredArgsConstructor
 public class OrderService {
 
     private final UserRepository customerRepository;
