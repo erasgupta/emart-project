@@ -30,7 +30,7 @@ public class OrderService {
     	// Validate delivery date
         LocalDate today = LocalDate.now();
         long daysBetween = ChronoUnit.DAYS.between(today, request.getDeliveryDate());
-        if (daysBetween <= 2) {
+        if (daysBetween < 2) {
             throw new IllegalArgumentException("Delivery date must be at least 2 days from today.");
         }
     	

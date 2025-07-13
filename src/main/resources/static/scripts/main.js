@@ -24,7 +24,7 @@ function renderProducts() {
 		const div = document.createElement("div");
 		div.className = "product";
 		div.innerHTML = `
-		  <img src="/images/crystalTeaLight.jpg" alt="candle">
+		  <img src="/images/crystalTeaCandle.jpeg" alt="candle">
           <br/>
 		  <strong>${product.name}</strong> ₹${product.price}
           <br/>
